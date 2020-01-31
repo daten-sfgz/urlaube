@@ -1,4 +1,4 @@
-# urlaube
+# Urlaube
 displays calendar data from public calendar
 
 Demo:
