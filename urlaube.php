@@ -53,7 +53,7 @@ class CalendarList {
 	'ho'=>'hideOthers'
 	);
 	Public $flexConf = array(
-		  'cal_url'		=>	'https://tcs.tam.ch/home/termine@sfgz.ch/',
+		  'cal_url'		=>	'https://subdomain.mydomain.ch/subpath/calendarname@calenardomain.ch/',
 		  'cals'		=> array( 'calendar'=>array( 0=>'urlaub') ) ,
 		  'Semestercals'=> array( 'semester'=>array( 0=>'urlaub') , 'calendar'=>array( 0=>'urlaub') ) ,
 		  'useSemesterCals'	=> 0 ,
