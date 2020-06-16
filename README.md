@@ -23,4 +23,5 @@ or on bottom of the file right before the PHP end-tag ?>
 $cls = new CalendarList();
 
 echo $cls->main();
+
 ?>
