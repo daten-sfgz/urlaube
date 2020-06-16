@@ -10,7 +10,6 @@ https://daten.sfgz.ch/urlaube.php?help=1
 ## Start / Install:
 Write in a new file:
 
-<?PHP
 
 include_once("urlaube.php"); 
 
