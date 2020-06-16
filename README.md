@@ -8,12 +8,19 @@ Help:
 https://daten.sfgz.ch/urlaube.php?help=1
 
 Start / Install:
-In a new file or on bottom of urlaube:
+Write in a new file:
 
-include_once("urlaube.php"); // only if in a other file
+include_once("urlaube.php"); 
 
 $cls = new CalendarList();
 
 echo $cls->main();
 
-die();
+---
+
+or on bottom of the file right before the PHP end-tag ?>
+
+$cls = new CalendarList();
+
+echo $cls->main();
+?>
