@@ -1,13 +1,13 @@
 # Urlaube
 displays calendar data from public calendar
 
-Demo:
+** Demo:
 https://daten.sfgz.ch/urlaube.php
 
-Help: 
+** Help: 
 https://daten.sfgz.ch/urlaube.php?help=1
 
-Start / Install:
+** Start / Install:
 Write in a new file:
 
 include_once("urlaube.php"); 
