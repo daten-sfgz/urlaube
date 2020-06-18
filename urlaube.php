@@ -11,7 +11,8 @@
 	 
 	 @licence MIT Free Software Licence
 	 @author Daniel Rueegg
-	 @date 2014-2020
+	 @date 18.06.2020
+	 @version 1.2
 **/
 
 class CalendarList {
@@ -31,6 +32,8 @@ class CalendarList {
 	Public $bool2num = array(false=>0,true=>1);
 	Public $calDB         = array();
 	Public $req      = array( 
+	'h'=>'help' , 
+	'hilfe'=>'help' , 
 	'help'=>'help' , 
 	'y'=>'selYear' , 
 	'yd'=>'yearDifference' , 
@@ -53,7 +56,7 @@ class CalendarList {
 	'ho'=>'hideOthers'
 	);
 	Public $flexConf = array(
-		  'cal_url'		=>	'https://subdomain.mydomain.ch/subpath/calendarname@calenardomain.ch/',
+		  'cal_url'		=>	'https://tcs.tam.ch/home/termine@sfgz.ch/',
 		  'cals'		=> array( 'calendar'=>array( 0=>'urlaub') ) ,
 		  'Semestercals'=> array( 'semester'=>array( 0=>'urlaub') , 'calendar'=>array( 0=>'urlaub') ) ,
 		  'useSemesterCals'	=> 0 ,
@@ -75,7 +78,7 @@ class CalendarList {
 		  'hyKeyWords'	=> array('Sommerferien','Sportferien') ,
 		  'boldCriteria'=> 8 ,
 		  'hideThis'=> '',
-		  'hideOthers'=> 'F',
+		  'hideOthers'=> '',
 		  'specialDates'=> 'B',
 		  'useFba'=> array( 'bold'=>'O', 'normal'=>'T' ) ,
 		  'boldIfKeyword'=> array( 'Sommerferien', 'Herbstferien', 'Weihnachtsferien', 'Sportferien', 'Frühlingsferien','Herbstsemester','Frühlingssemester' ) ,
@@ -150,7 +153,7 @@ class CalendarList {
 			  '.$content_encoded.'
 			  </div>
 		  </div>';
-	  if(isset($_REQUEST['help']) && $_REQUEST['help']!=='0'){
+	  if(isset($this->flexConf['help']) && $this->flexConf['help']!=='0'){
 		$bodyText.= $this->help();
 	  }elseif(isset($_REQUEST['info']) && $_REQUEST['info']!=='0'){
 		$bodyText.= 'Parameter &info gibt es in "Urlaube" nicht, versuche <a href="?help=1">&help</a> ';
@@ -167,6 +170,8 @@ class CalendarList {
 		return $content_encoded;
 	  }elseif($this->flexConf['onlyBody']==5){
 		return $content_encoded;
+	  }elseif($this->flexConf['onlyBody']==6){
+		return '<div class="navi0">'.$this->flexConf['yearNavi'].'</div>';
 	  }elseif(empty($this->flexConf['onlyBody'])){
 		$bodyText = '<div class="navi0">'.$this->flexConf['yearNavi'].'</div>';
 		$bodyText.= $mainBodyText;
@@ -226,6 +231,7 @@ class CalendarList {
 		$lnk_bdy3 =  '<a href="'.$this->mkLinkQuery(array('bdy'=>'3')).'">3</a>';
 		$lnk_bdy4 =  '<a href="'.$this->mkLinkQuery(array('bdy'=>'4')).'">4</a>';
 		$lnk_bdy5 =  '<a href="'.$this->mkLinkQuery(array('bdy'=>'5')).'">5</a>';
+		$lnk_bdy6 =  '<a href="'.$this->mkLinkQuery(array('bdy'=>'6')).'">6</a>';
 		$lnk_chr0 =  '<a href="'.$this->mkLinkQuery(array('charset'=>'UTF-8')).'">UTF-8</a>';
 		$lnk_chr1 =  '<a href="'.$this->mkLinkQuery(array('charset'=>'ISO-8859-1')).'">ISO-8859-1</a>';
 		$lnk_chr2 =  '<a href="'.$this->mkLinkQuery(array('charset'=>'ISO-8859-15')).'">ISO-8859-15</a>';
@@ -271,9 +277,9 @@ class CalendarList {
 		$bodyText .= '<tr><td>yd</td><td>Jahr-Differenz (Startjahr) Differenz zu aktuellem Jahr </td><td>[ '.$lnk_ydv2.' ... '.$lnk_yd0.' ... '.$lnk_ydn2.' ] </td><td>'.$this->flexConf['yearDifference'].'</td></tr>';
 		$bodyText .= '<tr><td>py,jv</td><td>Anzahl vergangener Jahre in Navigation</td><td>[ '.$lnk_py0.'...'.$lnk_py9.' ] </td><td>'.$this->flexConf['yearsPassed'].'</td></tr>';
 		$bodyText .= '<tr><td>fy,jz</td><td>Anzahl kommender Jahre in Navigation</td><td>[ '.$lnk_fy0.'...'.$lnk_fy9.' ] </td><td>'.$this->flexConf['yearsFuture'].'</td></tr>';
-		$bodyText .= '<tr><td>bdy</td><td>Alles mit ausgeben [0], nur Tabelle [1], nur Navigation [2], nur spezielle Termine [3], nur inneres HTML f&uuml;r Urlaube [4] oder f&uuml;r spezielle Termine [5] anzeigen</td><td>[ '.$lnk_bdy0.' | '.$lnk_bdy1.' | '.$lnk_bdy2.' | '.$lnk_bdy3.' | '.$lnk_bdy4.' | '.$lnk_bdy5.' ] </td><td>'.$this->flexConf['onlyBody'].'</td></tr>';
+		$bodyText .= '<tr><td>bdy</td><td>Alles mit ausgeben [0], nur Tabelle [1], nur Navigation [2], nur spezielle Termine [3], nur inneres HTML f&uuml;r Urlaube [4] oder f&uuml;r spezielle Termine [5] oder f&uuml;r Navigation [6] anzeigen.</td><td>[ '.$lnk_bdy0.' | '.$lnk_bdy1.' | '.$lnk_bdy2.' | '.$lnk_bdy3.' | '.$lnk_bdy4.' | '.$lnk_bdy5.' | '.$lnk_bdy6.' ] </td><td>'.$this->flexConf['onlyBody'].'</td></tr>';
 		$bodyText .= '<tr><td>charset</td><td>Zeichensatz</td><td>[ '.$lnk_chr0.' ... '.$lnk_chr2.' ] </td><td>'.$this->flexConf['charset'].'</td></tr>';
-		$bodyText .= '<tr><td><i>hideOthers</i></td><td> nur diese <i>anzeigen</i>:</td><td>[ '.$lnk_ho.' | '.$lnk_ho0.' | '.$lnk_ho1.' | '.$lnk_ho2.' | '.$lnk_ho3.'] </td><td>['.$this->flexConf['hideOthers'].'] </td></tr>';
+		$bodyText .= '<tr><td><i>hideOthers</i></td><td> nur diese <i>anzeigen</i>: <i><u>F</u>rei, <u>T</u>empor&auml;r, <u>B</u>esetzt,  <u>O</u>utdoor (ausser Haus)</i></td><td>[ '.$lnk_ho.' | '.$lnk_ho0.' | '.$lnk_ho1.' | '.$lnk_ho2.' | '.$lnk_ho3.'] </td><td>['.$this->flexConf['hideOthers'].'] </td></tr>';
 		$bodyText .= '<tr><td><i>hideThis</i></td><td> diese <i>verstecken:</i> (nur aktiv wenn <i>hideOthers</i> leer)</td><td>[ '.$lnk_ht.' | '.$lnk_ht0.' | '.$lnk_ht1.' | '.$lnk_ht2.' | '.$lnk_ht3.']</td><td>['.$this->flexConf['hideThis'].'] </td></tr>';
 		$bodyText .= '<tr><td>sem</td><td>Verwendet den Kalender "Semester" f&uuml;r die ersten beiden Zeilen (Herbst- und Fr&uuml;hlingssemester) langsam!</td><td>[ '.$lnk_sem0.' | '.$lnk_sem1.' ] </td><td>'.$this->flexConf['useSemesterCals'].'</td></tr>';
 		$bodyText .= '<tr><td>fix</td><td>fast/slow (fix=1 schnelle Version gibt alle Eintr&auml;ge aus, falls gar keine mit tag <i>urlaub</i> markiert wurden, fix=0 unterdr&uuml;ckt sie.)</td><td>[ '.$lnk_fix0.' | '.$lnk_fix1.' ] </td><td>'.$this->flexConf['fix'].'</td></tr>';
@@ -306,7 +312,7 @@ class CalendarList {
 			if($this->flexConf['timNow'] > $this->calDB['data'][$c][$t][$id]['xe'])continue;
 			if( $this->calDB['data'][$c][$t][$id]['fba'] !=$this->flexConf['specialDates'])continue;
 			$criteria['moredays'] = (date('d.m.y' , $this->calDB['data'][$c][$t][$id]['xs']) != date('d.m.y' , $this->calDB['data'][$c][$t][$id]['xe']));
-			$out.= '<tr>';
+			$out.= '<tr class="fba_' . $this->calDB['data'][$c][$t][$id]['fba'] . '">';
 			$out.='<td style="text-align:left;verical-align:top;'.$this->flexConf['dottedlineImage'].'">';
 			$out.= $this->calDB['data'][$c][$t][$id]['name'].'';
 			$out.= ' </td>';
@@ -373,7 +379,7 @@ class CalendarList {
 			$debugTitleE = array(0=>'',1=>' title="'.$this->calDB['data'][$c][$t][$id]['e'].'"');
 			$out = '';
 			if($isLonger && !$this->flexConf['croppedpos']){
-			  $out .= '<tr class="noBorderBottom '.$isBold[ $this->calDB['data'][$c][$t][$id]['fba'] ].'">';
+			  $out .= '<tr class="noBorderBottom '.$isBold[ $this->calDB['data'][$c][$t][$id]['fba'] ].' fba_' . $this->calDB['data'][$c][$t][$id]['fba'] . '">';
 			  $out.= '<td colspan="3">'.$this->calDB['data'][$c][$t][$id]['name'].'</td>';
 			  $out.= '</tr>';
 			}
@@ -384,7 +390,7 @@ class CalendarList {
 			    $classname='';
 			    $tdStyle=''.$this->flexConf['dottedlineImage'].'';
 			}
-			$out .= '<tr class="'.$isBold[ $this->calDB['data'][$c][$t][$id]['fba'] ].''.$classname.'">';
+			$out .= '<tr class="'.$isBold[ $this->calDB['data'][$c][$t][$id]['fba'] ].''.$classname.' fba_' . $this->calDB['data'][$c][$t][$id]['fba'] . '">';
 			$out.= '<td style="vertical-align:top;'.$boldStyle[$adClass[ $criteria['bold'][$this->flexConf['boldCriteria']] ]].'" class="first '.$adClass[ $criteria['bold'][$this->flexConf['boldCriteria']] ].'">';
 			$out.= ''.$debugFBCode[ $this->flexConf['debugMode'] ];
 			if(empty($isLonger)){
@@ -406,7 +412,7 @@ class CalendarList {
 			}
 			$out.= ' </td></tr>';
 			if( empty($classname) && !empty($tdStyle) ){
-			    $out.= '<tr><td colspan="3" style="font-size:1px;height:1px;padding:0;'.$this->flexConf['dottedlineImage'].'">'.$this->calDB['data'][$c][$t][$id]['fr'].'</td></tr>';
+			    $out.= '<tr class="fba_' . $this->calDB['data'][$c][$t][$id]['fba'] . '"><td colspan="3" style="font-size:1px;height:1px;padding:0;'.$this->flexConf['dottedlineImage'].'">'.$this->calDB['data'][$c][$t][$id]['fr'].'</td></tr>';
 			}
 			if($isLonger && $this->flexConf['croppedpos']){
 			  if(!empty($this->calDB['data'][$c][$t][$id]['fr'])){
@@ -416,13 +422,13 @@ class CalendarList {
 			    $classname='';
 			    $tdStyle=''.$this->flexConf['dottedlineImage'].'';
 			  }
-			  $out .= '<tr class="'.$isBold[ $this->calDB['data'][$c][$t][$id]['fba'] ];
+			  $out .= '<tr class="'.$isBold[ $this->calDB['data'][$c][$t][$id]['fba'] ] . ' fba_' . $this->calDB['data'][$c][$t][$id]['fba'] . '';
 			  $out.=''.$classname.'">';
 			  $out.= '<td colspan="3" style="'.$tdStyle.'">'.$this->calDB['data'][$c][$t][$id]['name'].'</td></tr>';
 			}
 			//zusaetzliche Zeile
 			if(!empty($this->calDB['data'][$c][$t][$id]['fr'])){
-			    $out.= '<tr><td colspan="3" style="'.$this->flexConf['dottedlineImage'].'">'.$this->calDB['data'][$c][$t][$id]['fr'].'</td></tr>';
+			    $out.= '<tr class="fba_' . $this->calDB['data'][$c][$t][$id]['fba'] . '"><td colspan="3" style="'.$this->flexConf['dottedlineImage'].'">'.$this->calDB['data'][$c][$t][$id]['fr'].'</td></tr>';
 			}
 			$outArr[ $this->calDB['data'][$c][$t][$id]['class'] ][]=$out;
 			$xe = $this->calDB['data'][$c][$t][$id]['xe'];
@@ -478,7 +484,8 @@ class CalendarList {
 	}
 	function init( ) {
 	  foreach(array_keys($this->req) as $var){
-		if( isset($_REQUEST[ $var ]) && isset($this->flexConf[$this->req[$var]]) ){$this->flexConf[$this->req[$var]]=$_REQUEST[ $var ];}
+		$origKey = $this->req[$var];
+		if( isset($_REQUEST[ $var ]) && $origKey ){$this->flexConf[$origKey]=$_REQUEST[ $var ];}
 	  }
 	  if( $this->flexConf['useSemesterCals']  ){ $this->flexConf['cals'] =  $this->flexConf['Semestercals']; }
 
@@ -668,7 +675,7 @@ class CalendarList {
 		}else{
 		  $this->flexConf['debugText'] .= '<p>'.$cal.' ist '.round( $secOld/3600,1 ).' Std. alt.</p>';
 		}
-		$this->flexConf['debugText'] .= '<a href="?help='.($_REQUEST['help'] ? 0 : 1).'&d=1">Hilfe ein/aus</a>';//.$this->obj_debugLink($t1);
+		$this->flexConf['debugText'] .= '<a href="?help='.($this->flexConf['help'] ? 0 : 1).'&d=1">Hilfe ein/aus</a>';//.$this->obj_debugLink($t1);
 	  }
 	  return $raw;
 	}
@@ -744,7 +751,7 @@ class CalendarList {
 	}
 
 	function obj_debugLink($t1) {
-	  if(!$this->flexConf['debugMode'] && (!isset($_REQUEST['help']) || $_REQUEST['help']==='0') )return;
+	  if(!$this->flexConf['debugMode'] && (!isset($this->flexConf['help']) || $this->flexConf['help']==='0') )return;
 	  $fixtext=array( 0=>'slow' , 1=>'fast' );
 	  $cachetext=array( false=>'off' , true=>'on' );
 		$t2=explode( ' ' , microtime() );
@@ -754,13 +761,16 @@ class CalendarList {
 		$LNK = '<a href="'.$this->mkLinkQuery($reqArr).'">&rArr; '.$fixtext[ $this->bool2num[1!=$this->flexConf['fix']] ].'</a>';
 		$LNK.= '&nbsp;<a href="'.$this->mkLinkQuery($cacheArr).'">&rArr; cache '.$cachetext[ 'on'!=$this->flexConf['cache'] ].'</a>';
 		$helptext=array(false=>'Hilfe',true=>'Hilfe aus');
-		$reqHArr['help'] = $this->bool2num[ !isset($_REQUEST['help']) || $_REQUEST['help']==='0' ];
+		$reqHArr['help'] = $this->bool2num[ !isset($this->flexConf['help']) || $this->flexConf['help']==='0' ];
 		//$reqHArr['bdy'] = 0;$reqHArr['d'] = 1;
-		$LNKH = '<a href="'.$this->mkLinkQuery($reqHArr).'">'.$helptext[isset($_REQUEST['help']) && $_REQUEST['help']!=='0'].'</a>';
+		$LNKH = '<a href="'.$this->mkLinkQuery($reqHArr).'">'.$helptext[isset($this->flexConf['help']) && $this->flexConf['help']!=='0'].'</a>';
 	  return '<p>'.$timeElapsed .'<b>'. $fixtext[ $this->flexConf['fix'] ].' cache:'.$this->flexConf['cache'].'</b> ...  '.$LNK.' '.$LNKH.'</p>';
 	}
 
 
 }
+	  $cls = new CalendarList();
+	  echo $cls->main();
+	  die();
 
 ?>
